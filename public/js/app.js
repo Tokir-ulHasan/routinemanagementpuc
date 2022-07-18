@@ -5038,7 +5038,7 @@ __webpack_require__.r(__webpack_exports__);
         var day_id = event.dataTransfer.getData('day');
         this.day = this.searchDataByID(this.days, parseInt(day_id));
 
-        if (this.day != null) {
+        if (this.day != null && this.edit_status != 1) {
           this.section = null;
           this.course = null;
           this.start_time = null;
@@ -5063,12 +5063,16 @@ __webpack_require__.r(__webpack_exports__);
 
         if (this.section != null) {
           this.semister = this.section.semister;
-          this.course = null;
-          this.start_time = null;
-          this.end_time = null;
-          this.teacher = null;
-          this.room = null;
-          this.msg_time = null;
+
+          if (this.edit_status != 1) {
+            this.course = null;
+            this.start_time = null;
+            this.end_time = null;
+            this.teacher = null;
+            this.room = null;
+            this.msg_time = null;
+          }
+
           this.warning_time = 0;
           this.warning_R = 0;
           this.msg = null;
@@ -5086,11 +5090,15 @@ __webpack_require__.r(__webpack_exports__);
 
         if (this.course != null) {
           this.CourseID = this.course.id;
-          this.start_time = null;
-          this.end_time = null;
-          this.teacher = null;
-          this.room = null;
-          this.msg_time = null;
+
+          if (this.edit_status != 1) {
+            this.start_time = null;
+            this.end_time = null;
+            this.teacher = null;
+            this.room = null;
+            this.msg_time = null;
+          }
+
           this.warning_time = 0;
           this.warning_R = 0;
           this.msg = null;
@@ -5142,8 +5150,11 @@ __webpack_require__.r(__webpack_exports__);
         var t = 0;
 
         if (this.start_time != null) {
-          this.teacher = null;
-          this.room = null;
+          if (this.edit_status != 1) {
+            this.teacher = null;
+            this.room = null;
+          }
+
           this.warning_R = 0;
           this.msg = null;
           this.warning_T = 0;
@@ -5313,7 +5324,7 @@ __webpack_require__.r(__webpack_exports__);
         _this5.start_time = null;
         _this5.teacher = null;
         _this5.edit_id = null;
-        _this5.edit_status = null;
+        _this5.edit_status = 0;
       });
     },
     editSlod: function editSlod(day, section, time) {
@@ -5324,10 +5335,12 @@ __webpack_require__.r(__webpack_exports__);
       if (Index !== -1) {
         this.day = this.searchDataByID(this.days, parseInt(this.routines[Index].day_id));
         this.section = this.searchDataByID(this.sections, parseInt(this.routines[Index].section_id));
+        this.semister = this.section.semister;
         this.course = this.searchDataByID(this.courses, parseInt(this.routines[Index].course_id));
         ;
         this.start_time = this.searchDataByID(this.times, parseInt(this.routines[Index].start_time_id));
         this.end_time = this.searchDataByID(this.times, parseInt(this.routines[Index].end_time_id));
+        this.CourseID = this.course.id;
         this.teacher = this.searchDataByID(this.teachers, parseInt(this.routines[Index].teacher_id));
         this.room = this.searchDataByID(this.rooms, parseInt(this.routines[Index].room_id));
         this.edit_status = 1;
@@ -5355,7 +5368,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this6 = this;
 
       var URL = "http://127.0.0.1:8000/api/routine/delete/" + this.del_id;
-      this.$http["delete"](URL, routine).then(function (result) {
+      this.$http["delete"](URL).then(function (result) {
         _this6.SessionGet();
 
         _this6.del_id = null;
